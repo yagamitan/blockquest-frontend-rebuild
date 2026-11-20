@@ -71,6 +71,9 @@ export default function LessonList() {
             {progress.some(
               (item) => item.lesson_id === lesson.id && item.completed,
             ) && <p>✅️ Completed</p>}
+            {progress.some(
+              (item) => item.lesson_id === lesson.id && !item.completed,
+            ) && <p>🟡 In progress</p>}
           </li>
         ))}
       </ul>
