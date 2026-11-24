@@ -54,15 +54,15 @@ export default function LessonList() {
   }, [token]);
 
   return (
-    <main>
-      <h1>BlockQuest</h1>
-      <p>Choose a lesson to begin learning.</p>
+    <main className="lesson-page">
+      <h1 className="page-title">BlockQuest</h1>
+      <p className="page-subtitle">Choose a lesson to begin learning.</p>
 
       {error && <p role="alert">{error}</p>}
 
-      <ul>
+      <ul className="lesson-list">
         {lessons.map((lesson) => (
-          <li key={lesson.id}>
+          <li className="lesson-card" key={lesson.id}>
             <h2>
               <Link to={`/lessons/${lesson.id}`}>{lesson.title}</Link>
             </h2>

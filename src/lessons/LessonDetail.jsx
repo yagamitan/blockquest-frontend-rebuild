@@ -1,8 +1,46 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../auth/AuthContext";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 
 const API = import.meta.env.VITE_API;
+
+function renderInlineMarkdown(text) {
+  const parts = text.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\(https?:\/\/[^)]+\))/g);
+
+  return parts.map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return <strong key={index}>{part.slice(2, -2)}</strong>;
+    }
+
+    const link = part.match(/^\[([^\]]+)\]\((https?:\/\/[^)]+)\)$/);
+    if (link) {
+      return (
+        <a key={index} href={link[2]} target="_blank" rel="noreferrer">
+          {link[1]}
+        </a>
+      );
+    }
+
+    return part;
+  });
+}
+
+function renderLessonContent(content) {
+  return content.split(/\n\n+/).map((block, index) => {
+    const [firstLine, ...remainingLines] = block.split("\n");
+    const heading = firstLine.startsWith("## ") ? firstLine.slice(3) : null;
+    const paragraph = heading
+      ? remainingLines.join(" ")
+      : block.replace(/\n/g, " ");
+
+    return (
+      <section key={index}>
+        {heading && <h2>{heading}</h2>}
+        {paragraph && <p>{renderInlineMarkdown(paragraph)}</p>}
+      </section>
+    );
+  });
+}
 
 export default function LessonDetail() {
   const { id } = useParams();
@@ -74,14 +112,21 @@ export default function LessonDetail() {
   }
 
   return (
-    <main>
+    <main className="lesson-detail-page">
+      <p>
+        <Link className="back-to-lessons" to="/">
+          Back to lessons
+        </Link>
+      </p>
       <p>{lesson.category}</p>
       <h1>{lesson.title}</h1>
       <p>{lesson.summary}</p>
-      <p>{lesson.content}</p>
+      <div className="lesson-content">
+        {renderLessonContent(lesson.content)}
+      </div>
 
       {lesson.questions?.length > 0 && (
-        <section>
+        <section className="quick-check">
           <h2>Quick check</h2>
           {lesson.questions.map((question) => (
             <fieldset key={question.id}>
@@ -117,13 +162,18 @@ export default function LessonDetail() {
           {quizError && <p role="alert">{quizError}</p>}
 
           {quizResult && (
-            <div>
+            <div className="quiz-results">
               <p>
                 Your score: {quizResult.score} / {quizResult.total}
               </p>
 
               {quizResult.results.map((result, index) => (
-                <p key={result.questionId}>
+                <p
+                  key={result.questionId}
+                  className={
+                    result.correct ? "answer-correct" : "answer-incorrect"
+                  }
+                >
                   Question {index + 1}:{" "}
                   {result.correct ? "Correct" : "Not quite"} —{" "}
                   {result.explanation}
