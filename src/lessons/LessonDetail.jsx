@@ -118,9 +118,9 @@ export default function LessonDetail() {
           Back to lessons
         </Link>
       </p>
-      <p>{lesson.category}</p>
+      <p className="lesson-category">{lesson.category}</p>
       <h1>{lesson.title}</h1>
-      <p>{lesson.summary}</p>
+      <p className="lesson-summary">{lesson.summary}</p>
       <div className="lesson-content">
         {renderLessonContent(lesson.content)}
       </div>
@@ -143,13 +143,15 @@ export default function LessonDetail() {
                     name={`question-${question.id}`}
                     value={option}
                     checked={selectedOptions[question.id] === option}
-                    onChange={(event) =>
+                    onChange={(event) => {
+                      setQuizResult(null);
+                      setQuizError("");
                       setSelectedOptions({
                         ...selectedOptions,
                         [question.id]: event.target.value,
-                      })
-                    }
-                  />
+                      });
+                    }}
+                  />{" "}
                   {text}
                 </label>
               ))}
@@ -162,23 +164,48 @@ export default function LessonDetail() {
           {quizError && <p role="alert">{quizError}</p>}
 
           {quizResult && (
-            <div className="quiz-results">
+            <div className="quiz-results" role="status" aria-live="polite">
               <p>
                 Your score: {quizResult.score} / {quizResult.total}
               </p>
-
-              {quizResult.results.map((result, index) => (
-                <p
-                  key={result.questionId}
-                  className={
-                    result.correct ? "answer-correct" : "answer-incorrect"
-                  }
-                >
-                  Question {index + 1}:{" "}
-                  {result.correct ? "Correct" : "Not quite"} —{" "}
-                  {result.explanation}
+              {quizResult.completed ? (
+                <p className="quiz-win">
+                  🎉 Level cleared! Your crypto brain just powered up.
                 </p>
-              ))}
+              ) : (
+                <p className="quiz-retry">
+                  🧩 Not quite—check the clues and take another shot!
+                </p>
+              )}
+
+              {quizResult.results.map((result, index) => {
+                const question = lesson.questions.find(
+                  (item) => item.id === result.questionId,
+                );
+                const correctAnswer = {
+                  A: question.option_a,
+                  B: question.option_b,
+                  C: question.option_c,
+                }[result.correctOption];
+
+                return (
+                  <p
+                    key={result.questionId}
+                    className={
+                      result.correct ? "answer-correct" : "answer-incorrect"
+                    }
+                  >
+                    Question {index + 1}:{" "}
+                    {result.correct ? "Correct" : "Not quite"} —{" "}
+                    {result.explanation}
+                    {!result.correct && (
+                      <span className="correct-answer">
+                        Correct answer: {correctAnswer}
+                      </span>
+                    )}
+                  </p>
+                );
+              })}
             </div>
           )}
         </section>

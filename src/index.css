@@ -4,10 +4,17 @@
 
 .lesson-content section {
   margin-bottom: 1rem;
+  padding: 1rem;
+  border-left: 4px solid #14b8a6;
+  border-radius: 0.75rem;
+  background: white;
+  box-shadow: 0 4px 14px rgb(15 23 42 / 6%);
 }
 
-.lesson-content h2 {
-  margin-bottom: 0.35rem;
+.lesson-content section h2 {
+  margin-top: 0;
+  color: #0f766e;
+  font-size: 1.25rem;
 }
 
 .lesson-content p {
@@ -155,9 +162,39 @@ body {
   border-radius: 0.75rem;
 }
 
+.quick-check legend {
+  padding: 0 0.35rem;
+  color: #0f766e;
+  font-weight: 700;
+}
+
 .quick-check label {
-  display: block;
-  margin: 0.75rem 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin: 0.65rem 0;
+  padding: 0.75rem;
+  border: 1px solid #dbeafe;
+  border-radius: 0.65rem;
+  background: white;
+  cursor: pointer;
+}
+
+.quick-check label:hover {
+  border-color: #14b8a6;
+  background: #f0fdfa;
+  box-shadow: 0 0 0 2px rgb(20 184 166 / 14%);
+}
+
+.quick-check label:has(input:checked) {
+  border-color: #0f766e;
+  background: #ccfbf1;
+  box-shadow: 0 0 0 2px rgb(20 184 166 / 14%);
+}
+
+.quick-check label:focus-within {
+  outline: 3px solid #0f766e;
+  outline-offset: 2px;
 }
 
 .quick-check button {
@@ -174,6 +211,11 @@ body {
   background: #115e59;
 }
 
+.quick-check button:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 3px;
+}
+
 .quiz-results {
   margin-top: 1rem;
   padding: 1rem;
@@ -187,4 +229,50 @@ body {
 
 .answer-incorrect {
   color: #b91c1c;
+}
+
+.lesson-category {
+  display: inline-block;
+  margin: 0.75rem 0 0;
+  padding: 0.3rem 0.75rem;
+  border-radius: 1000px;
+  background: #ccfbf1;
+  color: #0f766e;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.lesson-summary {
+  margin-top: 0.25rem;
+  margin-bottom: 1.5rem;
+  color: #475569;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.quiz-win,
+.quiz-retry {
+  padding: 0.85rem 1rem;
+  border-left: 4px solid;
+  border-radius: 0.75rem;
+  font-weight: 700;
+}
+
+.quiz-win {
+  border-color: #10b981;
+  background: #d1fae5;
+  color: #047857;
+}
+
+.quiz-retry {
+  border-color: #f59e0b;
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.correct-answer {
+  display: block;
+  margin-top: 0.4rem;
+  color: #047857;
+  font-weight: 700;
 }
