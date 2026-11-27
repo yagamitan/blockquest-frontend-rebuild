@@ -91,6 +91,38 @@
   color: #475569;
 }
 
+.course-progress {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid #99f6e4;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #f0fdfa, #ecfeff);
+  box-shadow: 0 4px 14px rgb(15 118 110 / 10%);
+}
+
+.course-progress h2 {
+  margin-top: 0;
+  color: #134e4a;
+}
+
+.course-progress p {
+  margin-bottom: 0.75rem;
+}
+
+.course-progress__track {
+  height: 0.75rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #ccfbf1;
+}
+
+.course-progress__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #0f766e, #2dd4bf);
+  transition: width 0.4s ease;
+}
+
 .lesson-page {
   max-width: 760px;
   margin: 2rem auto;

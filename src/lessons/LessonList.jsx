@@ -53,10 +53,39 @@ export default function LessonList() {
     loadProgress();
   }, [token]);
 
+  const completedCount = lessons.filter((lesson) =>
+    progress.some((item) => item.lesson_id === lesson.id && item.completed),
+  ).length;
+
+  const progressPercent = lessons.length
+    ? Math.round((completedCount / lessons.length) * 100)
+    : 0;
+
   return (
     <main className="lesson-page">
       <h1 className="page-title">BlockQuest</h1>
       <p className="page-subtitle">Choose a lesson to begin learning.</p>
+
+      <section className="course-progress">
+        <h2>Course progress</h2>
+        <p>
+          {completedCount} of {lessons.length} lessons completed
+        </p>
+        <div
+          className="course-progress__track"
+          role="progressbar"
+          aria-label="Course progress"
+          aria-valuenow={progressPercent}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
+          <div
+            className="course-progress__fill"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
+        <p>{progressPercent}% complete</p>
+      </section>
 
       {error && <p role="alert">{error}</p>}
 
